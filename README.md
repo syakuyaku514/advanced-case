@@ -64,6 +64,10 @@ php artisan migrate
 ```
 php artisan db:seed
 ```
+8. シンボリックリンクの作成 
+```
+php artisan storage:link
+```
 
 
 ## その他

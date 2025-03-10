@@ -71,7 +71,13 @@ php artisan storage:link
 
 
 ## その他
+2025/3　口コミ機能を追加
+（一般ユーザーは一店舗に対し一つの口コミを投稿し、投稿を修正・削除できる。管理者ユーザーは一般ユーザーの口コミを削除することができる）
+
 #### URL
 * 開発環境    : http://localhost/
 * phpMyAdmin  : http://localhost:8080/
+* 管理者ページテスト登録　　　　　: http://localhost/admin/register
+* 管理者ページテストログイン　　　：http://localhost/admin/login
+* 管理者ページテスト、本番どちらもメールアドレス：test@taro.com、パスワードpasswordtaroでログインできます。
 

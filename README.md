@@ -25,7 +25,8 @@ https://github.com:syakuyaku514/advanced-case
 
 
 # ER図
-![ER図](https://github.com/user-attachments/assets/142daaaa-5579-4d65-80b9-4b1cdd888fb3)
+![ER図](https://github.com/user-attachments/assets/ba807036-586d-4276-9240-6606e8c1416f)
+
 
 
 

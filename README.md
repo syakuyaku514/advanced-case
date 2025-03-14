@@ -44,12 +44,8 @@ https://github.com:syakuyaku514/advanced-case
 ![ER図](https://github.com/user-attachments/assets/ba807036-586d-4276-9240-6606e8c1416f)
 
 # テスト用新店舗追加CSV
-[Uploadistore,region_id,genre_id,overview,image
-さくら寿司,東京都,寿司,新鮮なネタを提供する寿司店です。,storage/images/sushi.jpg
-まる焼肉,大阪府,焼肉,焼肉を楽しめるお店です。,storage/images/yakiniku.jpg
-ピッツァ屋,福岡県,イタリアン,本格的なイタリアンピザのお店です。,storage/images/italian.jpg
-魚居酒屋,福岡県,居酒屋,魚料理と居酒屋メニューが豊富。,storage/images/izakaya.jpg
-ラーメン一番,大阪府,ラーメン,鶏白湯ラーメンが人気の店。,storage/images/ramen.jpgng teststore3.csv…]()
+(https://docs.google.com/spreadsheets/d/1odyPMABdT3TGWr7a8r5s-T2Jtn90kg8-_ORvqcQEb_c/edit?gid=0#gid=0)
+こちらを開き、ファイルからダウンロードを選択し、カンマ区切り形式（csv）をクリックしていただけるとテスト用csvをダウンロード可能です。
 
 
 

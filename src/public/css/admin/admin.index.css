@@ -80,3 +80,18 @@
 .formcard_form {
     background-color: white;
 }
+
+.container {
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.btn-primary {
+    border: none;
+    background-color: rgb(100 100 252);
+    color: white;
+    border-radius: 10px 10px 10px 10px;
+    height: 40px;
+    width: 100px;
+    margin-top: 2%;
+}

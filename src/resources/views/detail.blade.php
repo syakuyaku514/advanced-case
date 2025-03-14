@@ -43,7 +43,7 @@
                         <option value="" selected="">未選択</option>
                         @for($i = 7; $i <= 20; $i++)
                         @for($j = 0; $j <= 5; $j++)
-                        <option value="{{$i}}:{{$j}}0">{{$i}}:{{$j}}0</option>
+                            <option value="{{$i}}:{{$j}}0">{{$i}}:{{$j}}0</option>
                         @endfor
                         @endfor
                     </select>
@@ -95,106 +95,92 @@
     </div>
 </div>
 
-<h2 class="reviewtitle">店舗のレビュー</h2>
-
-<!-- レビューカード -->
-<div class="reviewcard">
-    <p class="reviewwrite">レビューを書く</p>
-    <form action="{{ route('store.review', $store->id) }}" method="post" class="reviewcardform">
-    @csrf
-    <ul class="cardlist">
-        <div class="commentbox">
-            <li>
-                <div class="comment">
-                    <label class="comment_text reviewwrite" for="body">コメント</label>
-                </div>
-            </li>
-            <li>
-                <div class="comment">
-                    <textarea class="reviewcomment" name="comment" class="form-control" id="body" cols="30" rows="10"></textarea>
-                </div>
-            </li>
-        </div>
-    </ul>
-
-    <div class="reviewerror">
-        <div class="errortitle">
-            @error('stars')
-                {{ $message }}
-            @enderror
-        </div>
-        <div class="errortitle">
-            @error('comment')
-                {{ $message }}
-            @enderror
-        </div>
-    </div>
-
-    <div class="reviewbtnbox">
-        <select class="cardlist_star" name="stars" id="star_rating">
-                <option value="">評価を選択</option>
-                <option value="1">★☆☆☆☆</option>
-                <option value="2">★★☆☆☆</option>
-                <option value="3">★★★☆☆</option>
-                <option value="4">★★★★☆</option>
-                <option value="5">★★★★★</option>
-        </select>
-        <button type="submit" class="cardlist_star sendbtn">送信する</button>
-    </div>
-    </form>
+<div class="review_post">
+    <a href="{{ route('review.index', ['id' => $store->id]) }}">
+        口コミを投稿する
+    </a>
 </div>
 
 
-<!-- レビュー一覧 -->
+<h2 class="reviewtitle">全ての口コミ情報</h2>
 <div>
-@foreach($Reviews as $Review)
-<div class="review">
-  <div class="reviewname">
-    <div class="reviewname_text">
-        <p>ユーザー名 :</p>
-        <p>{{ $Review->user->name }}</p>
-    </div>
-    <div class="reviewstar">
-        @for ($i = 0; $i < $Review->stars; $i++)
-          <img src="{{ asset('img/star-yellow.png')}}" alt="黄色い星">
-        @endfor
-        @for ($i = $Review->stars; $i < 5; $i++)
-          <img src="{{ asset('img/star-gray.png')}}" alt="灰色の星">
-        @endfor
-    </div>
-  </div>
-  <div class="reviewtext">
-      <p class="reviewcontent">{{ $Review->comment }}</p>
-  </div>
+    @foreach ($storeReviews as $review)
+    <!-- 自分の口コミの場合、更新ボタンと削除ボタンを表示 -->
+            @if ($review->user_id == Auth::id())
+                <!-- 更新ボタン -->
+                <div class="review_btn">
+                 <a href="javascript:void(0);" class="edit-btn" data-id="edit-form-{{ $review->id }}">口コミを編集</a>
 
-  <div class="userreview">
-  @if(auth()->id() == $Review->user_id)
-    <form action="{{ route('review.update', $Review->id) }}" method="post">
-      @csrf
-      @method('PATCH')
-      <div class="userreview">
-        <input type="text" class="userreview_inp" name="comment" value="{{ $Review->comment }}" required>
-        <select name="stars" id="stars" required>
-          <option value="">評価を選択</option>
-          <option value="1" {{ $Review->stars == 1 ? 'selected' : '' }}>★☆☆☆☆</option>
-          <option value="2" {{ $Review->stars == 2 ? 'selected' : '' }}>★★☆☆☆</option>
-          <option value="3" {{ $Review->stars == 3 ? 'selected' : '' }}>★★★☆☆</option>
-          <option value="4" {{ $Review->stars == 4 ? 'selected' : '' }}>★★★★☆</option>
-          <option value="5" {{ $Review->stars == 5 ? 'selected' : '' }}>★★★★★</option>
-        </select>
-      </div>
-        <button type="submit" class="userreview_btn updatebtn">更新</button>
-    </form>
-    <form action="{{ route('review.destroy', $Review->id) }}" method="post">
-      @csrf
-      @method('DELETE')
-        <button type="submit" class="userreview_btn deletebtn">削除</button>
-    </form>
-  @endif
-  </div>
+                <!-- 編集フォーム（初期状態は非表示） -->
+                <form id="edit-form-{{ $review->id }}" action="{{ route('store_reviews.update', $review->id) }}" method="POST" enctype="multipart/form-data" class="updateform">
+                    @csrf
+                    @method('PATCH')
+                    <label>評価：</label>
+                    <select name="stars">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <option value="{{ $i }}" {{ $review->stars == $i ? 'selected' : '' }}>{{ $i }}</option>
+                        @endfor
+                    </select>
+
+                    <label>コメント：</label>
+                    <textarea name="comment" class="comment_text">
+                        {{ $review->comment }}
+                    </textarea>
+
+                    <label>画像</label>
+                    <input type="file" name="review_image[]" multiple>
+
+                    <button type="submit">更新</button>
+                </form>
+
+                <!-- 削除ボタン -->
+                <form id="delete-form-{{ $review->id }}" action="{{ route('store_reviews.destroy', $review->id) }}" method="POST" style="display: none;">
+                @csrf
+                @method('DELETE')
+                </form>
+
+                <a href="javascript:void(0);" class="delete-btn" onclick="event.preventDefault(); if(confirm('本当に削除しますか？')) document.getElementById('delete-form-{{ $review->id }}').submit();">
+                    口コミを削除
+                </a>
+                </div>
+                @endif
+
+    
+
+        <div class="review">
+            <div>
+                @for ($i = 1; $i <= 5; $i++)
+                    @if ($i <= $review->stars)
+                        <!-- 評価された星は青色 -->
+                        <img src="{{ asset('img/blue-star.png') }}" alt="評価の星" class="review_star">
+                    @else
+                        <!-- 評価されていない星は灰色 -->
+                        <img src="{{ asset('img/star-gray.png') }}" alt="無評価の星" class="review_star">
+                    @endif
+                @endfor
+                <p>{{ $review->comment }}</p>
+            </div>
+
+            <p>{{ $review->content }}</p>
+            
+            @if ($review->image) <!-- 画像がある場合 -->
+                @php
+                    $images = json_decode($review->image);
+                @endphp
+                <div class="review-images">
+                    @foreach ($images as $image)
+                        <div class="review-image">
+                            <img src="{{ asset('storage/' . $image) }}" alt="レビュー画像" class="reviewimg">
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            
+        </div>
+    @endforeach
 </div>
-@endforeach
-</div>
+
 
 
 <script>
@@ -252,5 +238,22 @@
         document.getElementById('time').addEventListener('input', updateReservationDetails);
         document.getElementById('peopleInput').addEventListener('input', updateReservationDetails);
     };
+
+    // 編集ボタンをクリックした時にフォームを表示
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const formId = this.getAttribute('data-id');
+            const form = document.getElementById(formId);
+        
+            // フォームの表示/非表示を切り替え
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        });
+    });
 </script>
+
+
 @endsection

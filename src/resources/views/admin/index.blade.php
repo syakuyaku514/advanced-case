@@ -79,5 +79,90 @@
             @endforeach
         </div>
     </div>
+
+
+    
+<!-- CSVインポート -->
+<div class="container mt-5">
+    <h2>CSVインポート</h2>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <form action="{{ route('csvImport') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group mb-4">
+            <div class="custom-file text-left">
+                <input type="file" name="csvFile" class="custom-file-input" id="csvFile" required>
+            </div>
+        </div>
+        <button class="btn btn-primary btn-lg">インポート</button>
+    </form>
+</div>
+
+
+
+
+
+@foreach ($stores as $store)
+    @if ($store->storeReviews->isNotEmpty())
+        <h3>{{ $store->name }}</h3>
+        <table border="1">
+            <tr>
+                <th>ユーザー</th>
+                <th>店舗名</th>
+                <th>コメント</th>
+                <th>評価</th>
+                <th>画像</th>
+                <th>削除</th>
+            </tr>
+            @foreach ($store->storeReviews as $review)
+                <tr>
+                    <td>{{ $review->user->name }}</td>
+                    <td>{{ $review->store->store }}</td>
+                    <td>{{ $review->comment }}</td>
+                    <td>
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $review->stars)
+                            <!-- 評価された星は青色 -->
+                            <img src="{{ asset('img/blue-star.png') }}" alt="評価の星" style="width: 20px; height: 20px;" class="star">
+                        @else
+                            <!-- 評価されていない星は灰色 -->
+                            <img src="{{ asset('img/star-gray.png') }}" alt="無評価の星" style="width: 20px; height: 20px;">
+                        @endif
+                        @endfor
+                    </td>
+                    <td>
+                        @if ($review->image)
+                        @php
+                            $images = json_decode($review->image);
+                        @endphp
+                            <div class="review-images">
+                            @foreach ($images as $image)
+                            <div class="review-image">
+                                <img src="{{ asset('storage/' . $image) }}" alt="レビュー画像" style="max-width: 100%; height: auto;">
+                            </div>
+                            @endforeach
+                           </div>
+                        @endif
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ route('admin.deleteReview', $review->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">削除</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </table>
+    @endif
+@endforeach
+
+
+
 </body>
 </html>

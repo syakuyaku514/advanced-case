@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\OwnerAuthController;
+use App\Http\Controllers\StoreReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,12 +80,24 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/review/{id}', [ReviewController::class, 'review'])->name('store.review');
     Route::delete('/review/{id}', [ReviewController::class, 'destroy'])->name('review.destroy');
     Route::patch('/review/{id}', [ReviewController::class, 'update'])->name('review.update');
+    
 
     // 決済
     Route::post('/payment', [UserController::class, 'payment'])->name('payment');
     Route::get('/payment/{reservation}', [UserController::class, 'paymentPage'])->name('payment.page');
     Route::get('/complete', [UserController::class, 'complete'])->name('complete');
     Route::post('/payment/process', [UserController::class, 'payment'])->name('payment.process');
+
+
+    // 口コミ
+    Route::post('/review', [StoreReviewController::class, 'store'])->name('store_reviews.store'); 
+    Route::get('/store_reviews/{store_id}', [StoreReviewController::class, 'index'])->name('store_reviews.index');
+    Route::get('/review/{id}/edit', [StoreReviewController::class, 'edit'])->name('store_reviews.edit');
+    Route::patch('/review/{id}', [StoreReviewController::class, 'update'])->name('store_reviews.update');
+    Route::delete('/review/{id}', [StoreReviewController::class, 'destroy'])->name('store_reviews.destroy');
+
+
+
 });
 
 // ゲスト
@@ -92,7 +105,17 @@ Route::get('/', [StoreController::class, 'index']);
 Route::get('/store/{id}', [StoreController::class, 'detail'])->name('store.detail');
 Route::get('/search',[StoreController::class, 'search']);
 Route::post('/search',[StoreController::class, 'search'])->name('search');
-Route::get('/review/{id}', [ReviewController::class, 'review'])->name('review');
+Route::get('/stores', [StoreController::class, 'index'])->name('store.index');
+
+
+// 口コミ画面の表示
+Route::get('/review/{id}', [StoreReviewController::class, 'review_index'])->name('review.index');
+
+// 店舗の口コミ一覧表示
+Route::get('/store_reviews/{store_id}', [StoreReviewController::class, 'index'])->name('store_reviews.index');
+
+
+
 
 
 // 管理者
@@ -102,6 +125,13 @@ Route::group(['middleware' => ['auth:admin', 'role:admin']], function () {
     Route::get('/admin/send-email', [AdminAuthController::class, 'showSendEmailForm'])->name('admin.sendEmailForm');
     Route::post('/admin/send-email', [AdminAuthController::class, 'sendEmail'])->name('admin.sendEmail');
     Route::post('/admin/owner/register', [AdminAuthController::class, 'registerOwner'])->name('admin.owner.register.submit');
+    Route::delete('/admin/reviews/{id}', [AdminAuthController::class, 'deleteReview'])->name('admin.deleteReview');
+
+
+    Route::get('/csv-import', [AdminAuthController::class, 'csvImport']);
+    Route::post('/csv-import', [AdminAuthController::class, 'csvImport'])->name('csvImport');
+    Route::get('/csv-import', [AdminAuthController::class, 'showImportForm'])->name('csvImportForm');
+
 
 });
 

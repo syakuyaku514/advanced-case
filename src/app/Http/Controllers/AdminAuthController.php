@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Region;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +14,12 @@ use App\Models\Owner;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\GeneralNotificationMail;
+use App\Models\StoreReview;
+use App\Models\Store;
+use Illuminate\Support\Facades\DB;
+use App\Imports\StoreImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 
 class AdminAuthController extends Controller
@@ -23,10 +31,14 @@ class AdminAuthController extends Controller
     }
 
     public function index()
-    {
-        $owners = Owner::all();
-        return view ('admin.index',compact('owners'));
-    }
+{
+    $owners = Owner::all();
+    $stores = Store::with('storeReviews')->get();
+    $regions = Region::all();
+    $genres = Genre::all(); 
+
+    return view('admin.index', compact('owners', 'stores', 'regions', 'genres'));
+}
 
 
     // 管理者ログイン処理
@@ -123,5 +135,89 @@ class AdminAuthController extends Controller
 
         return redirect()->route('admin.sendEmailForm')->with('success', 'メールが送信されました。');
     }
+
+    public function deleteReview($id)
+    {
+        $review = StoreReview::find($id);
+        
+        if ($review) {
+            $review->delete();
+            return redirect()->back()->with('success', 'レビューを削除しました。');
+        } else {
+            return redirect()->back()->with('error', 'レビューが見つかりませんでした。');
+        }
+    }
+
+    
+
+        // インポートの表示
+public function showImportForm()
+{
+    $regions = Region::all();
+    $genres = Genre::all();
+    $owners = Owner::all();
+    $stores = Store::with('storeReviews')->get();
+    
+    return view('admin.index', compact('regions','genres','owners','stores'));
+}
+
+    // CSVインポートを実行
+public function csvImport(Request $request)
+{
+    // RegionとGenreのデータを取得
+    $regions = Region::all();
+    $genres = Genre::all();
+
+    // CSVファイルのバリデーション
+    $request->validate([
+        'csvFile' => 'required|mimes:csv,txt|max:2048',
+    ]);
+
+    // ファイルが存在する場合
+    if ($request->hasFile('csvFile')) {
+        $file = $request->file('csvFile');
+        $path = $file->getRealPath();
+        $fp = fopen($path, 'r');
+
+        // ヘッダー行をスキップ
+        fgetcsv($fp);
+
+        // 1行ずつ読み込み
+        while (($csvData = fgetcsv($fp)) !== false) {
+            
+            // CSVデータをデータベースに挿入
+            $this->InsertCsvData($csvData);
+        }
+
+        fclose($fp);
+
+        // 成功メッセージとともにインポートフォームにリダイレクト
+        return redirect()->route('csvImportForm')->with('success', 'CSVファイルのインポートが完了しました。');
+    }
+
+    // CSVファイルが選択されていない場合
+    return back()->withErrors(['csvFile' => 'CSVファイルが必要です。']);
+}
+
+
+    // CSVデータをデータベースに挿入
+public function InsertCsvData($csvData)
+{
+    // RegionとGenreのIDをCSVデータから取得
+    $regionId = DB::table('regions')->where('region', $csvData[1])->value('id');
+    $genreId = DB::table('genres')->where('genre', $csvData[2])->value('id');
+
+
+    // 新しいStoreエントリーを作成
+    $store = new Store;
+    $store->store = $csvData[0]; // 店名
+    $store->region_id = $regionId; // regionsテーブルから取得したregion_id
+    $store->genre_id = $genreId; // genresテーブルから取得したgenre_id
+    $store->overview = $csvData[3]; // 概要
+    $store->image = $csvData[4]; // 画像URL
+    $store->save(); // データベースに保存
+}
+
+
     
 }

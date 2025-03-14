@@ -1,4 +1,4 @@
-# Rese（リーズ）
+[teststore3.csv](https://github.com/user-attachments/files/19255575/teststore3.csv)# Rese（リーズ）
 
 概要説明
 飲食店予約サービス
@@ -17,6 +17,22 @@ https://github.com:syakuyaku514/advanced-case
 
 ## 機能一覧
 * ユーザー別ログイン（認証機能）
+* （一般ユーザー）ログイン、ログアウト
+* （一般ユーザー）飲食店お気に入り登録、解除
+* （一般ユーザー）飲食店来店予約、予約変更、予約解除
+* （一般ユーザー）来店確認QRコード
+* （一般ユーザー）事前支払機能
+* （一般ユーザー）飲食店検索機能
+* （一般ユーザー）飲食店口コミ投稿、修正、削除
+* （一般ユーザー）飲食店並び替え機能
+* （店舗ユーザー）飲食店一覧閲覧
+* （店舗ユーザー）飲食店舗新規作成、情報更新、削除
+* （店舗ユーザー）一般ユーザー予約情報確認
+* （管理ユーザー）店舗代表者作成
+* （管理ユーザー）新規店舗作成インポート機能
+* （管理ユーザー）一般ユーザーへのメール送信機能
+* （管理ユーザー）一般ユーザー口コミ削除機能
+
 
 ## 使用技術（実行環境）
 * PHP 7.4.9（使用言語）
@@ -26,6 +42,14 @@ https://github.com:syakuyaku514/advanced-case
 
 # ER図
 ![ER図](https://github.com/user-attachments/assets/ba807036-586d-4276-9240-6606e8c1416f)
+
+# テスト用新店舗追加CSV
+[Uploadistore,region_id,genre_id,overview,image
+さくら寿司,東京都,寿司,新鮮なネタを提供する寿司店です。,storage/images/sushi.jpg
+まる焼肉,大阪府,焼肉,焼肉を楽しめるお店です。,storage/images/yakiniku.jpg
+ピッツァ屋,福岡県,イタリアン,本格的なイタリアンピザのお店です。,storage/images/italian.jpg
+魚居酒屋,福岡県,居酒屋,魚料理と居酒屋メニューが豊富。,storage/images/izakaya.jpg
+ラーメン一番,大阪府,ラーメン,鶏白湯ラーメンが人気の店。,storage/images/ramen.jpgng teststore3.csv…]()
 
 
 
@@ -72,8 +96,8 @@ php artisan storage:link
 
 
 ## その他
-2025/3　口コミ機能を追加
-（一般ユーザーは一店舗に対し一つの口コミを投稿し、投稿を修正・削除できる。管理者ユーザーは一般ユーザーの口コミを削除することができる）
+2025/3　一般ユーザー口コミ機能を追加
+（一般ユーザーは店舗来店予定日時終了後、一店舗に対し一つの口コミを投稿し、自分の投稿を修正・削除できる。管理者ユーザーは一般ユーザーの口コミを削除することができる）
 
 #### URL
 * 開発環境    : http://localhost/
@@ -81,4 +105,6 @@ php artisan storage:link
 * 管理者ページテスト登録　　　　　: http://localhost/admin/register
 * 管理者ページテストログイン　　　：http://localhost/admin/login
 * 管理者ページテスト、本番どちらもメールアドレス：test@taro.com、パスワードpasswordtaroでログインできます。
+* 店舗代表者ページテストログイン　：http://localhost/owner/login
+* 店舗代表者は管理者ページで作成したメールアドレスとパスワードでログインしてください。
 

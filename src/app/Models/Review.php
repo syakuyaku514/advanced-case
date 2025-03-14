@@ -17,10 +17,11 @@ class Review extends Model
     ];
 
 
-    public function store(){
-        return $this->belongsTo('App\Models\Store');
-    }
+    // public function store(){
+    //     return $this->belongsTo('App\Models\Store');
+    // }
     public function user() {
         return $this->belongsTo('App\Models\User');
     }
+    
 }

@@ -193,6 +193,7 @@
     border-radius: 2% 2% 2% 2%;
     margin-top: -6%;
     margin-left: 64%;
+    width: 50%;
 }
 
 .region {
@@ -236,7 +237,7 @@
 .indexform_inp {
     border: none;
     height: 95%;
-    width: 245px;
+    width: 100%;
     background-color: #ffffff;
     border-radius: 2% 2% 2% 2%;
     margin-left: 3%;
@@ -277,6 +278,21 @@ select {
     /* 180度回転 */
     pointer-events: none;
     /* 矢印がクリックを邪魔しないように */
+}
+
+.form-container {
+    display: flex;
+    /* フォームを横に並べる */
+    align-items: center;
+    /* 縦方向の中央揃え */
+    gap: 10px;
+    /* フォーム間の間隔 */
+}
+
+.indexform,
+.sortform {
+    display: flex;
+    align-items: center;
 }
 
 

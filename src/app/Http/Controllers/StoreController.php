@@ -9,6 +9,8 @@ use App\Models\Genre;
 use App\Models\Region;
 use App\Http\Requests\ReservationRequest;
 use App\Models\Review;
+use App\Models\StoreReview;
+
 
 class StoreController extends Controller
 {
@@ -18,13 +20,33 @@ class StoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cards = Store::with(['region', 'genre'])->get();
-        $regions = Region::all(); 
+        // 地域・ジャンルのデータを取得
+        $regions = Region::all();
         $genres = Genre::all();
+        $store = Store::first();
 
-        return view ('index',compact('cards','regions','genres'));
+        // クエリビルダーの初期化
+        $query = Store::with(['region', 'genre'])
+            ->withAvg('storeReviews', 'stars'); // 修正: `stars` の平均を取得
+
+        // ソートの処理
+        $sort = $request->input('sort');
+
+        if ($sort === 'random') {
+            $query->inRandomOrder(); // ランダム
+        } elseif ($sort === 'high_rating') {
+            $query->orderByDesc('store_reviews_avg_stars') // 修正: 正しいカラム名に変更
+                  ->orderBy('id', 'asc'); // 評価なしの店舗を最後尾に
+        } elseif ($sort === 'low_rating') {
+            $query->orderBy('store_reviews_avg_stars', 'asc') // 修正: 正しいカラム名に変更
+                  ->orderBy('id', 'asc'); // 評価なしの店舗を最後尾に
+        }
+
+        $cards = $query->get();
+
+        return view('index', compact('cards', 'regions', 'genres', 'store'));
     }
 
 
@@ -37,12 +59,12 @@ class StoreController extends Controller
     public function detail($id)
     {
         $store = Store::with(['region','genre'])->find($id);
-        $Reviews = Review::where('store_id', $id)->with('user')->get();
+        $storeReviews = StoreReview::where('store_id', $id)->with('user')->get();
         $cards = Store::with(['region', 'genre'])->get();
         $regions = Region::all();
         $genres = Genre::all();
 
-        return view('detail',compact('store', 'cards', 'regions', 'genres', 'Reviews'));
+        return view('detail',compact('store', 'cards', 'regions', 'genres', 'storeReviews'));
     }
 
     public function create(Request $request, $id)
@@ -110,5 +132,8 @@ class StoreController extends Controller
     
         return response('予約が見つかりません', 404);
     }
+
+    
+
     
 }

@@ -205,7 +205,6 @@
 }
 
 .review {
-    background-color: aliceblue;
     margin-top: 15px;
     border-radius: 2% 2% 2% 2%;
     padding: 10px;
@@ -235,6 +234,33 @@
 .reviewname_text {
     display: flex;
     margin-right: 10px;
+}
+
+.reviewimg {
+    max-width: 50%;
+    height: 50%;
+}
+
+.review_post {
+    margin-top: 3%;
+    margin-bottom: 2%;
+}
+
+.review_btn {
+    text-align: end;
+}
+
+.review_star {
+    width: 7%;
+}
+
+.comment_text {
+    width: 25%;
+}
+
+.updateform {
+    display: flex;
+    justify-content: space-between;
 }
 
 @media screen and (max-width:1400px) {

@@ -27,6 +27,17 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.indexform').submit(); // フォームを送信
     });
 });
+
+function updateSortDisplay() {
+        const sortSelect = document.getElementById("sort");
+        const sortDisplay = document.getElementById("sort-display");
+
+        // 選択されたオプションのテキストを取得
+        const selectedText = sortSelect.options[sortSelect.selectedIndex].text.replace("並び替え：", ""); 
+        
+        // 現在の並び順の表示を変更
+        sortDisplay.textContent = selectedText;
+    }
 </script>
 @endsection
 
@@ -36,9 +47,26 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <div>
-  <form action="/search" method="POST" class="indexform">
-  @csrf
+  
+
   <div class="serachbox">
+
+
+    <form action="{{ route('store.index') }}" method="GET" class="indexform">
+        <div class="select-container">
+        <select name="sort" id="sort" class="region" onchange="this.form.submit()">
+              <option value="random" {{ request('sort') == 'random' ? 'selected' : '' }}>並び替え：ランダム</option>
+              <option value="high_rating" {{ request('sort') == 'high_rating' ? 'selected' : '' }}>並び替え：評価が高い順</option>
+              <option value="low_rating" {{ request('sort') == 'low_rating' ? 'selected' : '' }}>評価が低い順</option>
+        </select>
+        <div class="arrow"></div>
+         </div>
+    </form>
+
+
+  <form action="/search" method="POST" class="indexform">
+  @csrf 
+
     <div class="select-container">
       <select name="region" id="region" class="region">
         <option value="">All area</option>
@@ -69,16 +97,29 @@ document.addEventListener('DOMContentLoaded', function() {
       <input type="text" name="keyword" value="{{ old('keyword', request('keyword')) }}" placeholder="Search..." class="indexform_inp">
     </div>
     <!-- <button type="submit" class="serachbox_btn">Search</button> -->
-  </div>
+
   </form>
-</div>              
+</div>      
+</div>
+
+<!-- 現在の並び順を表示 -->
+   <div class="select-line">
+    <p id="current-sort">現在の並び順: <span id="sort-display">
+        {{ request('sort') == 'random' ? 'ランダム' : (request('sort') == 'high_rating' ? '評価が高い順' : (request('sort') == 'low_rating' ? '評価が低い順' : 'デフォルト')) }}
+    </span></p>
+    </div>
+
+
+    
 
 <div class="cards">
 @foreach($cards as $card)
 <div class="card">
   <div class="card__imgframe">
     @if (strpos($card->image, 'images/') !== false)
-        <img src="{{ asset('storage/' . $card->image) }}" alt="{{ $card->store }}" class="cardimg">
+        <img src="{{ asset($card->image) }}" alt="{{ $card->store }}" class="cardimg">
+
+        
     @else
         <img src="{{ asset($card->image) }}" alt="{{ $card->store }}" class="cardimg">
     @endif

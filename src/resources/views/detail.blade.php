@@ -15,9 +15,9 @@
         </div>
         <div class="imagebox">
             @if (strpos($store->image, 'images/') !== false)
-            <img src="{{ asset('storage/' . $store->image) }}" alt="{{ $store->store }}" class="detailimg">
+                <img src="{{ asset('storage/' . $store->image) }}" alt="{{ $store->store }}" class="detailimg">
             @else
-            <img src="{{ asset($store->image) }}" alt="{{ $store->store }}" class="detailimg">
+                <img src="{{ asset($store->image) }}" alt="{{ $store->store }}" class="detailimg">
             @endif
             <div class="explanation">
                 <div class="storedetail">
@@ -43,7 +43,9 @@
                         <option value="" selected="">未選択</option>
                         @for($i = 7; $i <= 20; $i++)
                         @for($j = 0; $j <= 5; $j++)
-                            <option value="{{$i}}:{{$j}}0">{{$i}}:{{$j}}0</option>
+                            <option value="{{$i}}:{{$j}}0">
+                                {{$i}}:{{$j}}0
+                            </option>
                         @endfor
                         @endfor
                     </select>
@@ -52,7 +54,9 @@
                     <select name="number" id="peopleInput" class="cardlist_form cardlist_select" onchange="updateReservationDetails()">
                         <option value="" selected>未選択</option>
                         @for($i = 1; $i <= 20; $i++)
-                            <option value="{{ $i }}">{{ $i }}人</option>
+                            <option value="{{ $i }}">
+                                {{ $i }}人
+                            </option>
                         @endfor
                     </select>
                 </li>
@@ -101,7 +105,6 @@
     </a>
 </div>
 
-
 <h2 class="reviewtitle">全ての口コミ情報</h2>
 <div>
     @foreach ($storeReviews as $review)
@@ -112,20 +115,20 @@
                  <a href="javascript:void(0);" class="edit-btn" data-id="edit-form-{{ $review->id }}">口コミを編集</a>
 
                 <!-- 編集フォーム（初期状態は非表示） -->
-                <form id="edit-form-{{ $review->id }}" action="{{ route('store_reviews.update', $review->id) }}" method="POST" enctype="multipart/form-data" class="updateform">
+                <form id="edit-form-{{ $review->id }}" action="{{ route('store_reviews.update', $review->id) }}" method="POST" enctype="multipart/form-data" style="display: none;">
                     @csrf
                     @method('PATCH')
                     <label>評価：</label>
                     <select name="stars">
                         @for ($i = 1; $i <= 5; $i++)
-                            <option value="{{ $i }}" {{ $review->stars == $i ? 'selected' : '' }}>{{ $i }}</option>
+                            <option value="{{ $i }}" {{ $review->stars == $i ? 'selected' : '' }}>
+                                {{ $i }}
+                            </option>
                         @endfor
                     </select>
 
                     <label>コメント：</label>
-                    <textarea name="comment" class="comment_text">
-                        {{ $review->comment }}
-                    </textarea>
+                    <textarea name="comment">{{ $review->comment }}</textarea>
 
                     <label>画像</label>
                     <input type="file" name="review_image[]" multiple>
@@ -143,19 +146,17 @@
                     口コミを削除
                 </a>
                 </div>
-                @endif
-
-    
+                @endif  
 
         <div class="review">
             <div>
                 @for ($i = 1; $i <= 5; $i++)
                     @if ($i <= $review->stars)
                         <!-- 評価された星は青色 -->
-                        <img src="{{ asset('img/blue-star.png') }}" alt="評価の星" class="review_star">
+                        <img src="{{ asset('img/blue-star.png') }}" alt="評価の星" style="width: 20px; height: 20px;" >
                     @else
                         <!-- 評価されていない星は灰色 -->
-                        <img src="{{ asset('img/star-gray.png') }}" alt="無評価の星" class="review_star">
+                        <img src="{{ asset('img/star-gray.png') }}" alt="無評価の星" style="width: 20px; height: 20px;">
                     @endif
                 @endfor
                 <p>{{ $review->comment }}</p>
@@ -175,12 +176,10 @@
                     @endforeach
                 </div>
             @endif
-
             
         </div>
     @endforeach
 </div>
-
 
 
 <script>
@@ -254,6 +253,5 @@
         });
     });
 </script>
-
 
 @endsection

@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="card thankscard">
-    <p class="tanks">ご予約ありがとうございます</p>
+    <p class="tanks thanks_text">ご予約ありがとうございます</p>
     <a class="thanksbackbtn" href="/mypage">戻る</a>
 </div>
 @endsection

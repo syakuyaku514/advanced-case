@@ -91,17 +91,17 @@
 
         <div class="imagebox">
         <h2>画像の追加</h2>
-        <div class="file-upload-wrapper" id="drag-drop-area">
-            <div class="drag-drop-inside">
-                <p class="drag-drop-info">クリックして写真を追加</p>
-                <!-- ファイル選択ボタン -->
-                <input type="file" name="review_image[]" accept="image/*" multiple style="display: none;" id="fileInput">
-                <label for="fileInput" class="file_input">
-                    またはドロッグアンドドロップ
-                </label>
-                <div id="image-preview-container" style="margin-top: 15px;"></div>
+            <div class="file-upload-wrapper" id="drag-drop-area">
+                <div class="drag-drop-inside">
+                    <p class="drag-drop-info">クリックして写真を追加</p>
+                    <!-- ファイル選択ボタン -->
+                    <input type="file" name="review_image[]" accept="image/*" multiple style="display: none;" id="fileInput">
+                    <label for="fileInput" class="file_input">
+                        またはドロッグアンドドロップ
+                    </label>
+                    <div id="image-preview-container" style="margin-top: 15px;"></div>
+                </div>
             </div>
-        </div>
         </div>
         <button type="submit" class="submitbtn">口コミを投稿</button>
     </form>

@@ -106,16 +106,10 @@ Route::get('/store/{id}', [StoreController::class, 'detail'])->name('store.detai
 Route::get('/search',[StoreController::class, 'search']);
 Route::post('/search',[StoreController::class, 'search'])->name('search');
 Route::get('/stores', [StoreController::class, 'index'])->name('store.index');
-
-
 // 口コミ画面の表示
 Route::get('/review/{id}', [StoreReviewController::class, 'review_index'])->name('review.index');
-
 // 店舗の口コミ一覧表示
 Route::get('/store_reviews/{store_id}', [StoreReviewController::class, 'index'])->name('store_reviews.index');
-
-
-
 
 
 // 管理者

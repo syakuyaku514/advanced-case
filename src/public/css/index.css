@@ -79,7 +79,7 @@
 .indexform_img {
     position: relative;
     display: flex;
-    background-color: #ffffff;
+    background-color: #f8f8f8;
 }
 
 .indexform_inp {
@@ -199,7 +199,7 @@
 .region {
     border: none;
     height: 100%;
-    background-color: #ffffff;
+    background-color: #f8f8f8;
     border-radius: 2% 2% 2% 2%;
     padding-right: 34px;
     position: relative;
@@ -219,18 +219,16 @@
 
 .select-container::before {
     left: 5px;
-    /* 左側の線の位置を調整 */
 }
 
 .select-container::after {
     right: 5px;
-    /* 右側の線の位置を調整 */
 }
 
 .genre {
     border: none;
     height: 100%;
-    background-color: #ffffff;
+    background-color: #f8f8f8;
     position: relative;
 }
 
@@ -238,7 +236,7 @@
     border: none;
     height: 95%;
     width: 100%;
-    background-color: #ffffff;
+    background-color: #f8f8f8;
     border-radius: 2% 2% 2% 2%;
     margin-left: 3%;
 }
@@ -257,12 +255,9 @@ select {
     -webkit-appearance: none;
     -moz-appearance: none;
     padding-right: 20px;
-    /* 矢印のスペースを確保 */
     background-color: #fff;
-    /* 背景色 */
     border: 1px solid #ccc;
     position: relative;
-    /* 矢印の位置調整用 */
 }
 
 .arrow {
@@ -275,18 +270,14 @@ select {
     background: url('/img/arrow.png') no-repeat;
     background-size: 16px 10px;
     transform: translateY(-50%) rotate(180deg);
-    /* 180度回転 */
     pointer-events: none;
-    /* 矢印がクリックを邪魔しないように */
 }
 
 .form-container {
     display: flex;
-    /* フォームを横に並べる */
     align-items: center;
-    /* 縦方向の中央揃え */
     gap: 10px;
-    /* フォーム間の間隔 */
+
 }
 
 .indexform,
@@ -328,6 +319,19 @@ select {
     }
 }
 
+@media screen and (max-width:1120px) {
+    .serachbox {
+        display: flex;
+        border: solid 1px #f7f7f7;
+        box-shadow: 2px 4px 3px #bdbdbd;
+        height: 37px;
+        border-radius: 2% 2% 2% 2%;
+        margin-top: -6%;
+        margin-left: 50%;
+        width: 70%;
+    }
+}
+
 @media screen and (max-width:1090px) {
     .cards {
         display: grid;
@@ -342,6 +346,19 @@ select {
         height: 30px;
         border-radius: 2% 2% 2% 2%;
         margin-bottom: 15px;
+    }
+}
+
+@media screen and (max-width:950px) {
+    .serachbox {
+        display: flex;
+        border: solid 1px #f7f7f7;
+        box-shadow: 2px 4px 3px #bdbdbd;
+        height: 30px;
+        border-radius: 2% 2% 2% 2%;
+        margin-bottom: 15px;
+        margin-left: 0%;
+        width: 100%;
     }
 }
 

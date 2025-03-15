@@ -46,14 +46,14 @@
             </div>
         </form>
 
-        {{-- 成功メッセージの表示 --}}
+        <!-- 成功メッセージの表示 -->
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
 
-        {{-- エラーメッセージの表示 --}}
+        <!-- エラーメッセージの表示 -->
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -65,7 +65,6 @@
         @endif
     </div>
 </div>
-
 
         <div class="adminview">
             <p class="admincreatep">店舗代表者一覧</p>
@@ -79,8 +78,6 @@
             @endforeach
         </div>
     </div>
-
-
     
 <!-- CSVインポート -->
 <div class="container mt-5">
@@ -102,10 +99,6 @@
         <button class="btn btn-primary btn-lg">インポート</button>
     </form>
 </div>
-
-
-
-
 
 @foreach ($stores as $store)
     @if ($store->storeReviews->isNotEmpty())
@@ -142,9 +135,9 @@
                         @endphp
                             <div class="review-images">
                             @foreach ($images as $image)
-                            <div class="review-image">
-                                <img src="{{ asset('storage/' . $image) }}" alt="レビュー画像" style="max-width: 100%; height: auto;">
-                            </div>
+                                <div class="review-image">
+                                    <img src="{{ asset('storage/' . $image) }}" alt="レビュー画像" style="max-width: 100%; height: auto;">
+                                </div>
                             @endforeach
                            </div>
                         @endif
@@ -161,8 +154,6 @@
         </table>
     @endif
 @endforeach
-
-
 
 </body>
 </html>

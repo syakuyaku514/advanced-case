@@ -19,7 +19,7 @@ class CreateStoreReviewsTable extends Migration
             $table->foreignId('store_id')->constrained('stores')->cascadeOnDelete();
             $table->tinyInteger('stars')->unsigned()->checkBetween(1, 5);
             $table->text('comment');
-            $table->string('image')->nullable(); // 画像は任意
+            $table->string('image')->nullable();
             $table->timestamps();
             $table->unique(['user_id', 'store_id']); // 1ユーザー1店舗1レビュー制限
         });

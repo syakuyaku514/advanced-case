@@ -34,9 +34,9 @@
                     <td class="storecard_view">{{$store->overview}}</td>
                     <td>
                         @if (strpos($store->image, 'images/') !== false)
-                        <img src="{{ asset('storage/' . $store->image) }}" alt="{{ $store->store }}" class="cardimg">
+                            <img src="{{ asset($store->image) }}" alt="{{ $store->store }}" class="cardimg">
                         @else
-                        <img src="{{ asset($store->image) }}" alt="{{ $store->store }}" class="cardimg">
+                            <img src="{{ asset($store->image) }}" alt="{{ $store->store }}" class="cardimg">
                         @endif
                     </td>
                     <td>
@@ -78,17 +78,17 @@
                      <th class="cardth">
                         <select name="region_id" id="region_id" required>
                             <option value="">地域を選択してください</option>
-                            @foreach($regions as $region)
-                            <option value="{{$region->id}}">{{$region->region}}</option>
-                            @endforeach
+                                @foreach($regions as $region)
+                                    <option value="{{$region->id}}">{{$region->region}}</option>
+                                @endforeach
                         </select>
                     </th>
                     <th class="cardth">
                         <select name="genre_id" id="genre_id" required>
                             <option value="">ジャンルを選択してください</option>
-                            @foreach($genres as $genre)
-                            <option value="{{$genre->id}}">{{$genre->genre}}</option>
-                            @endforeach
+                                @foreach($genres as $genre)
+                                    <option value="{{$genre->id}}">{{$genre->genre}}</option>
+                                @endforeach
                         </select>
                     </th>
                     <th class="cardth">
@@ -102,7 +102,6 @@
             <button type="submit" class="ownerlogout">新規店舗情報作成</button>
         </form>
     </div>
-
 
   <div class="card">
     <p class="cardtitle">予約情報の確認</p>
@@ -122,9 +121,9 @@
             <td class="cardreservation">{{$reservation->store->store}}</td>
             <td class="cardreservation">
                 @if (strpos($reservation->store->image, 'images/') !== false)
-                <img src="{{ asset('storage/' . $reservation->store->image) }}" alt="{{ $reservation->store->store }}" width="100">
+                    <img src="{{ asset('storage/' . $reservation->store->image) }}" alt="{{ $reservation->store->store }}" width="100">
                 @else
-                <img src="{{ asset($reservation->store->image) }}" alt="{{ $reservation->store->store }}" width="100">
+                    <img src="{{ asset($reservation->store->image) }}" alt="{{ $reservation->store->store }}" width="100">
                 @endif
             </td>
             <td class="cardreservation">{{$reservation->date}}</td>

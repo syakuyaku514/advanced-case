@@ -110,6 +110,10 @@
     font-size: 23px;
 }
 
+.thanks_text {
+    background-color: white;
+}
+
 
 
 @media screen and (max-width:1723px) {

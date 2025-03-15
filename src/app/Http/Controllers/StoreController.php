@@ -29,19 +29,19 @@ class StoreController extends Controller
 
         // クエリビルダーの初期化
         $query = Store::with(['region', 'genre'])
-            ->withAvg('storeReviews', 'stars'); // 修正: `stars` の平均を取得
+            ->withAvg('storeReviews', 'stars');
 
         // ソートの処理
         $sort = $request->input('sort');
 
         if ($sort === 'random') {
-            $query->inRandomOrder(); // ランダム
+            $query->inRandomOrder();
         } elseif ($sort === 'high_rating') {
-            $query->orderByDesc('store_reviews_avg_stars') // 修正: 正しいカラム名に変更
-                  ->orderBy('id', 'asc'); // 評価なしの店舗を最後尾に
+            $query->orderByDesc('store_reviews_avg_stars')
+                  ->orderBy('id', 'asc');
         } elseif ($sort === 'low_rating') {
-            $query->orderBy('store_reviews_avg_stars', 'asc') // 修正: 正しいカラム名に変更
-                  ->orderBy('id', 'asc'); // 評価なしの店舗を最後尾に
+            $query->orderBy('store_reviews_avg_stars', 'asc')
+                  ->orderBy('id', 'asc');
         }
 
         $cards = $query->get();
@@ -80,8 +80,8 @@ class StoreController extends Controller
         ]);
 
         $reservation = new Reservation();
-        $reservation->user_id = auth()->id(); // 現在のユーザーIDを取得
-        $reservation->store_id = $id; // ここで $id を使用
+        $reservation->user_id = auth()->id();
+        $reservation->store_id = $id;
         $reservation->date = $request->input('date');
         $reservation->time = $request->input('time');
         $reservation->number = $request->input('number');

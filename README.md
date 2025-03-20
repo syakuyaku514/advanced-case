@@ -51,7 +51,7 @@ https://github.com:syakuyaku514/advanced-case
 - `image`: 店舗の画像のパス (例: `storage/images/sushi.jpg`) (文字列)
 
 # テスト用新店舗追加CSV
-[teststore3.csv](https://github.com/user-attachments/files/19255575/teststore3.csv)
+[teststore3.csv](https://github.com/user-attachments/files/19255575/teststore3.csv),
 (https://docs.google.com/spreadsheets/d/1odyPMABdT3TGWr7a8r5s-T2Jtn90kg8-_ORvqcQEb_c/edit?gid=0#gid=0)
 こちらを開き、ファイルからダウンロードを選択し、カンマ区切り形式（csv）をクリックしていただけるとテスト用csvをダウンロード可能です。
 

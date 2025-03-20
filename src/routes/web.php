@@ -95,6 +95,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/review/{id}/edit', [StoreReviewController::class, 'edit'])->name('store_reviews.edit');
     Route::patch('/review/{id}', [StoreReviewController::class, 'update'])->name('store_reviews.update');
     Route::delete('/review/{id}', [StoreReviewController::class, 'destroy'])->name('store_reviews.destroy');
+    Route::get('/store_reviews/{id}/edit', [StoreReviewController::class, 'edit'])->name('store_reviews.edit');
+    Route::patch('/store_reviews/{id}', [StoreReviewController::class, 'update'])->name('store_reviews.update');
+
 
 
 

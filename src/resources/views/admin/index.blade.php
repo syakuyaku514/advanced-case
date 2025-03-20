@@ -96,6 +96,22 @@
                 <input type="file" name="csvFile" class="custom-file-input" id="csvFile" required>
             </div>
         </div>
+        @if(session('error_details'))
+        <div class="error-list">
+            <p>CSVデータにエラーがあります。</p>
+            <ul>
+            @foreach(session('error_details') as $row => $messages)
+                <li>行 {{ $row }}:
+                    <ul>
+                        @foreach($messages as $message)
+                            <li>{{ $message }}</li>
+                        @endforeach
+                    </ul>
+                </li>
+            @endforeach
+            </ul>
+        </div>
+        @endif
         <button class="btn btn-primary btn-lg">インポート</button>
     </form>
 </div>

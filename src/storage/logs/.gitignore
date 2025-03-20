@@ -1,2 +1,11 @@
+# デフォルトで全てのファイルを無視
 *
+
+# .gitignoreファイルは追跡対象にする
 !.gitignore
+
+# storageディレクトリ内の特定のファイルは無視しないようにする
+!/storage
+!/storage/*
+!/storage/app/public
+!/storage/app/public/images

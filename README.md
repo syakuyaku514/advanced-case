@@ -1,4 +1,4 @@
-[teststore3.csv](https://github.com/user-attachments/files/19255575/teststore3.csv)# Rese（リーズ）
+# Rese（リーズ）
 
 概要説明
 飲食店予約サービス
@@ -43,7 +43,15 @@ https://github.com:syakuyaku514/advanced-case
 # ER図
 ![ER図](https://github.com/user-attachments/assets/ba807036-586d-4276-9240-6606e8c1416f)
 
+# 新店舗追加csvフォーマット
+- `store`: 店舗の名前 (文字列)
+- `region_id`: 店舗が所在する地域 (例: 東京都、大阪府、福岡県など) (文字列)
+- `genre_id`: 店舗のジャンル (例: 寿司、焼肉、ラーメン、イタリアン、居酒屋など) (文字列)
+- `overview`: 店舗の概要説明 (文字列)
+- `image`: 店舗の画像のパス (例: `storage/images/sushi.jpg`) (文字列)
+
 # テスト用新店舗追加CSV
+[teststore3.csv](https://github.com/user-attachments/files/19255575/teststore3.csv)
 (https://docs.google.com/spreadsheets/d/1odyPMABdT3TGWr7a8r5s-T2Jtn90kg8-_ORvqcQEb_c/edit?gid=0#gid=0)
 こちらを開き、ファイルからダウンロードを選択し、カンマ区切り形式（csv）をクリックしていただけるとテスト用csvをダウンロード可能です。
 

@@ -47,33 +47,32 @@
 
 
     <div class="reviewcard">
-    <h2 class="reviewtitle">体験を評価してください</h2>
+    <h2 class="reviewtitle">
+        体験を評価してください
+    </h2>
     <form action="{{ route('store_reviews.store') }}" method="post" enctype="multipart/form-data" class="reviewcardform">
         @csrf
         @method('POST')
         <input type="hidden" name="store_id" value="{{ $store->id }}">
-
-        <!-- 評価を隠しフィールドで送信 -->
         <input type="hidden" name="stars" id="star_rating" value="">
 
         <div class="form-rating">
-            <button type="button" class="star-btn" data-value="5">
-                <img src="{{ asset('img/star-gray.png') }}" alt="星5" class="star-img">
-            </button>
-            <button type="button" class="star-btn" data-value="4">
-                <img src="{{ asset('img/star-gray.png') }}" alt="星4" class="star-img">
-            </button>
-            <button type="button" class="star-btn" data-value="3">
-                <img src="{{ asset('img/star-gray.png') }}" alt="星3" class="star-img">
+            <button type="button" class="star-btn" data-value="1">
+                <img src="{{ asset('img/star-gray.png') }}" alt="星1" class="star-img">
             </button>
             <button type="button" class="star-btn" data-value="2">
                 <img src="{{ asset('img/star-gray.png') }}" alt="星2" class="star-img">
             </button>
-            <button type="button" class="star-btn" data-value="1">
-                <img src="{{ asset('img/star-gray.png') }}" alt="星1" class="star-img">
+            <button type="button" class="star-btn" data-value="3">
+                <img src="{{ asset('img/star-gray.png') }}" alt="星3" class="star-img">
+            </button>
+            <button type="button" class="star-btn" data-value="4">
+                <img src="{{ asset('img/star-gray.png') }}" alt="星4" class="star-img">
+            </button>
+            <button type="button" class="star-btn" data-value="5">
+                <img src="{{ asset('img/star-gray.png') }}" alt="星5" class="star-img">
             </button>
         </div>
-
         <div class="reviewbox">
             <h2>口コミを投稿</h2>
             @if ($errors->any())
@@ -84,7 +83,9 @@
             </div>
             @endif
 
-            <textarea name="review_content" class="review_textarea" placeholder="カジュアルな夜のお出かけにおすすめのスポット" rows="4">{{ old('review_content') }}</textarea>
+            <textarea name="review_content" class="review_textarea" placeholder="カジュアルな夜のお出かけにおすすめのスポット" rows="4">
+                {{ old('review_content') }}
+            </textarea>
             <p class="text">0/400（最高文字数）</p>
           
         </div>
@@ -103,6 +104,11 @@
                 </div>
             </div>
         </div>
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
         <button type="submit" class="submitbtn">口コミを投稿</button>
     </form>
     </div>
@@ -110,33 +116,22 @@
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const stars = document.querySelectorAll('.star-btn');
-    const ratingInput = document.getElementById('star_rating');
+document.addEventListener("DOMContentLoaded", function () {
+    const stars = document.querySelectorAll(".star-btn");
+    const starInput = document.getElementById("star_rating");
 
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            const value = this.getAttribute('data-value');
-            const img = this.querySelector('img');
+    stars.forEach((star, index) => {
+        star.addEventListener("click", function () {
+            const rating = this.getAttribute("data-value");
+            starInput.value = rating; // 隠しフィールドに選択した星の数を設定
 
-            if (img.src.indexOf("blue-star.png") === -1) {
-                img.src = "{{ asset('img/blue-star.png') }}";
-            } else {
-                img.src = "{{ asset('img/star-gray.png') }}";
+            // 全ての星を灰色に戻す
+            stars.forEach(s => s.querySelector("img").src = "{{ asset('img/star-gray.png') }}");
+
+            // 選択した星までを黄色に変更
+            for (let i = 0; i < rating; i++) {
+                stars[i].querySelector("img").src = "{{ asset('img/blue-star.png') }}";
             }
-
-            // 画像サイズを JavaScript で変更する
-            img.style.width = "50px"; 
-            img.style.height = "50px";
-
-            let selectedStars = 0;
-            stars.forEach((star, index) => {
-                if (star.querySelector('img').src.indexOf("blue-star.png") !== -1) {
-                    selectedStars = index + 1;
-                }
-            });
-
-            ratingInput.value = selectedStars;
         });
     });
 });

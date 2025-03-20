@@ -124,19 +124,39 @@ class StoreReviewController extends Controller
     {
         // ログインユーザーの口コミを取得
         $review = StoreReview::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+    
+        // 口コミに紐づく店舗情報を取得
+        $store = $review->store; // assuming you have a 'store' relationship in StoreReview model
 
-        return view('reviews.edit', compact('review'));
+        return view('review_update', compact('review', 'store'));
     }
+
 
     public function update(Request $request, $id)
     {
         // ログインユーザーの口コミを取得
         $review = StoreReview::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
-        // 画像の処理
+        // 既存の画像パスを取得
         $imagePaths = json_decode($review->image, true) ?? [];
+
+        // コメントを取得
+        $comment = $request->comment;
+
+        // 削除される画像があれば削除
+        if ($request->has('delete_images')) {
+            foreach ($request->delete_images as $imageToDelete) {
+                // ストレージから画像を削除
+                Storage::disk('public')->delete($imageToDelete);
+                // 削除対象の画像を配列から削除
+                $imagePaths = array_filter($imagePaths, fn($path) => $path !== $imageToDelete);
+            }
+        }
+
+        // 新しい画像をアップロード
         if ($request->hasFile('review_image')) {
-            foreach ($request->file('review_image') as $image) {
+            // 新しい画像が選ばれた場合
+           foreach ($request->file('review_image') as $image) {
                 if ($image->isValid()) {
                     $imagePaths[] = $image->store('reviews', 'public');
                 }
@@ -146,12 +166,16 @@ class StoreReviewController extends Controller
         // データを更新
         $review->update([
             'stars' => $request->stars,
-            'comment' => $request->comment,
+            'comment' => $comment, // ここでコメントを更新
             'image' => !empty($imagePaths) ? json_encode($imagePaths) : null,
         ]);
 
-        return back()->with('success', '口コミを投稿しました');
+        return redirect()->route('store.detail', ['id' => $review->store_id])
+                     ->with('success', '口コミを更新しました');
     }
+
+
+
 
     public function destroy($id)
     {

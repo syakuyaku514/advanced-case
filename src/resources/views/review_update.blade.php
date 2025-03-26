@@ -44,20 +44,7 @@
         </div>
     </div>
 
-    <label>現在の画像：</label>
-            @if (!empty($review->image))
-                @foreach (json_decode($review->image, true) as $index => $imagePath)
-                    <div class="existing-image">
-                        <img src="{{ asset('storage/' . $imagePath) }}" alt="口コミ画像" width="100" class="current-image" data-index="{{ $index }}">
-                        <input type="file" name="review_image[]" class="image-input" style="display: none;" data-index="{{ $index }}">
-                        <label>
-                            <input type="checkbox" name="delete_images[]" value="{{ $imagePath }}"> 削除
-                        </label>
-                    </div>
-                @endforeach
-            @else
-                <p>画像はありません</p>
-            @endif
+
 
     </div>
 
@@ -116,7 +103,23 @@
             </div>
         @endif
 
-        <button type="submit" class="updatebtn">口コミを更新</button>
+        <label>現在の画像：</label>
+            @if (!empty($review->image))
+                @foreach (json_decode($review->image, true) as $index => $imagePath)
+                    <div class="existing-image">
+                        <img src="{{ asset('storage/' . $imagePath) }}" alt="口コミ画像" width="100" class="current-image" data-index="{{ $index }}">
+                        <input type="file" name="review_image[]" class="image-input" style="display: none;" data-index="{{ $index }}">
+                        <label>
+                            <input type="checkbox" name="delete_images[]" value="{{ $imagePath }}"> 削除
+                        </label>
+                    </div>
+                @endforeach
+            @else
+                <p>画像はありません</p>
+            @endif
+<button type="submit" class="updatebtn">口コミを更新</button>
+    </div>
+
     </form>
 </div>
 

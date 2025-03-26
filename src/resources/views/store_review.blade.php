@@ -83,9 +83,8 @@
             </div>
             @endif
 
-            <textarea name="review_content" class="review_textarea" placeholder="カジュアルな夜のお出かけにおすすめのスポット" rows="4">
-                {{ old('review_content') }}
-            </textarea>
+            <textarea name="review_content" class="review_textarea" placeholder="カジュアルな夜のお出かけにおすすめのスポット" rows="4">@if(old('review_content')){{ old('review_content') }}@endif</textarea>
+
             <p class="text">0/400（最高文字数）</p>
           
         </div>

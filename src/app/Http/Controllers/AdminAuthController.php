@@ -243,6 +243,8 @@ class AdminAuthController extends Controller
         $regionId = DB::table('regions')->where('region', $csvData[1])->value('id');
         $genreId = DB::table('genres')->where('genre', $csvData[2])->value('id');
 
+         $imagePath = 'storage/images/' . $csvData[4];
+
 
         // 新しいStoreエントリーを作成
         $store = new Store;

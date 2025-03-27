@@ -40,8 +40,8 @@ class StoreController extends Controller
             $query->orderByDesc('store_reviews_avg_stars')
                   ->orderBy('id', 'asc');
         } elseif ($sort === 'low_rating') {
-            $query->orderBy('store_reviews_avg_stars', 'asc')
-                  ->orderBy('id', 'asc');
+            $query->orderByRaw('store_reviews_avg_stars IS NULL, store_reviews_avg_stars ASC')
+              ->orderBy('id', 'asc');
         }
 
         $cards = $query->get();

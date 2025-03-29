@@ -158,93 +158,94 @@ class AdminAuthController extends Controller
     }
 
     public function csvImport(Request $request)
-{
-    // RegionとGenreのデータを取得
-    $regions = Region::all();
-    $genres = Genre::all();
+    {
+        // RegionとGenreのデータを取得
+        $regions = Region::all();
+        $genres = Genre::all();
 
-    // CSVファイルのバリデーション
-    $request->validate([
-        'csvFile' => 'required|mimes:csv,txt|max:2048',
-    ]);
+        // CSVファイルのバリデーション
+        $request->validate([
+           'csvFile' => 'required|mimes:csv,txt|max:2048',
+        ]);
 
-    // ファイルが存在する場合
-    if ($request->hasFile('csvFile')) {
-        $file = $request->file('csvFile');
-        $path = $file->getRealPath();
-        $fp = fopen($path, 'r');
+        // ファイルが存在する場合
+        if ($request->hasFile('csvFile')) {
+            $file = $request->file('csvFile');
+            $path = $file->getRealPath();
+            $fp = fopen($path, 'r');
 
-        // ヘッダー行をスキップ
-        fgetcsv($fp);
+            // ヘッダー行をスキップ
+            fgetcsv($fp);
 
-        $errors = [];
-        $rowNumber = 1;
+            $errors = [];
+            $rowNumber = 1;
 
-        // 1行ずつ読み込み
-        while (($csvData = fgetcsv($fp)) !== false) {
-            $rowNumber++;
+            // 1行ずつ読み込み
+            while (($csvData = fgetcsv($fp)) !== false) {
+                $rowNumber++;
 
-            // CSVデータのバリデーションルール
-            $validator = Validator::make([
-                'store_name' => $csvData[0] ?? null,
-                'region' => $csvData[1] ?? null,
-                'genre' => $csvData[2] ?? null,
-                'store_description' => $csvData[3] ?? null,
-                'image_url' => $csvData[4] ?? null,
-            ], [
-                'store_name' => 'required|max:50',
-                'region' => 'required|in:東京都,大阪府,福岡県',
-                'genre' => 'required|in:寿司,焼肉,イタリアン,居酒屋,ラーメン',
-                'store_description' => 'required|max:400',
-                'image_url' => [
-                    'required',
-                    'regex:/\.(jpg|jpeg|png)$/i'
-                ],
-            ]);
+                // CSVデータのバリデーションルール
+                $validator = Validator::make([
+                    'store_name' => $csvData[0] ?? null,
+                    'region' => $csvData[1] ?? null,
+                    'genre' => $csvData[2] ?? null,
+                    'store_description' => $csvData[3] ?? null,
+                    'image_url' => $csvData[4] ?? null,
+                ], [
+                    'store_name' => 'required|max:50',
+                    'region' => 'required|in:東京都,大阪府,福岡県',
+                    'genre' => 'required|in:寿司,焼肉,イタリアン,居酒屋,ラーメン',
+                    'store_description' => 'required|max:400',
+                    'image_url' => [
+                        'required',
+                        'regex:/\.(jpg|jpeg|png)$/i'
+                    ],
+                ]);
 
-            // フィールド名を日本語に変更
-            $validator->setAttributeNames([
-                'store_name' => '店舗名',
-                'region' => '地域',
-                'genre' => 'ジャンル',
-                'store_description' => '店舗概要',
-                'image_url' => '画像URL',
-            ]);
+                // フィールド名を日本語に変更
+                $validator->setAttributeNames([
+                    'store_name' => '店舗名',
+                    'region' => '地域',
+                    'genre' => 'ジャンル',
+                    'store_description' => '店舗概要',
+                    'image_url' => '画像URL',
+                ]);
 
-            // バリデーションエラーがある場合
-            if ($validator->fails()) {
-                $errors[$rowNumber] = $validator->errors()->all();
+                // バリデーションエラーがある場合
+                if ($validator->fails()) {
+                    $errors[$rowNumber] = $validator->errors()->all();
                 continue;
+                }
+
+                // CSVデータをデータベースに挿入
+                $this->InsertCsvData($csvData);
             }
 
-            // CSVデータをデータベースに挿入
-            $this->InsertCsvData($csvData);
-        }
+            fclose($fp);
 
-        fclose($fp);
+            // バリデーションエラーがある場合はエラーメッセージを返す
+            if (!empty($errors)) {
+                return redirect()->route('csvImportForm')->withErrors(['csvFile' => 'CSVデータにエラーがあります。'])->with('error_details', $errors);
+            }
 
-        // バリデーションエラーがある場合はエラーメッセージを返す
-        if (!empty($errors)) {
-            return redirect()->route('csvImportForm')->withErrors(['csvFile' => 'CSVデータにエラーがあります。'])->with('error_details', $errors);
-        }
+            // 成功メッセージ
+            return redirect()->route('csvImportForm')->with('success', 'CSVファイルのインポートが完了しました。');
+            }
 
-        // 成功メッセージ
-        return redirect()->route('csvImportForm')->with('success', 'CSVファイルのインポートが完了しました。');
+        // CSVファイルが選択されていない場合
+        return back()->withErrors(['csvFile' => 'CSVファイルが必要です。']);
     }
-
-    // CSVファイルが選択されていない場合
-    return back()->withErrors(['csvFile' => 'CSVファイルが必要です。']);
-}
 
     // CSVデータをデータベースに挿入
     public function InsertCsvData($csvData)
     {
-        // RegionとGenreのIDをCSVデータから取得
+        // RegionとGenreのIDを取得
         $regionId = DB::table('regions')->where('region', $csvData[1])->value('id');
         $genreId = DB::table('genres')->where('genre', $csvData[2])->value('id');
 
-         $imagePath = 'storage/images/' . $csvData[4];
-
+        // 画像のパスを修正
+        $imageName = basename($csvData[4]); // ファイル名のみ取得
+        $imagePath = 'storage/images/' . $imageName;
 
         // 新しいStoreエントリーを作成
         $store = new Store;
@@ -252,7 +253,7 @@ class AdminAuthController extends Controller
         $store->region_id = $regionId;
         $store->genre_id = $genreId;
         $store->overview = $csvData[3];
-        $store->image = $csvData[4];
+        $store->image = $imagePath; // `images/` ディレクトリ内のパスを保存
         $store->save();
     }
     

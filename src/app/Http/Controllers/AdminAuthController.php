@@ -243,17 +243,13 @@ class AdminAuthController extends Controller
         $regionId = DB::table('regions')->where('region', $csvData[1])->value('id');
         $genreId = DB::table('genres')->where('genre', $csvData[2])->value('id');
 
-        // 画像のパスを修正
-        $imageName = basename($csvData[4]); // ファイル名のみ取得
-        $imagePath = 'storage/images/' . $imageName;
-
         // 新しいStoreエントリーを作成
         $store = new Store;
         $store->store = $csvData[0];
         $store->region_id = $regionId;
         $store->genre_id = $genreId;
         $store->overview = $csvData[3];
-        $store->image = $imagePath; // `images/` ディレクトリ内のパスを保存
+        $store->image = $csvData[4];
         $store->save();
     }
     

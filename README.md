@@ -51,18 +51,7 @@ https://github.com:syakuyaku514/advanced-case
 - `image`: 店舗の画像のパス (例: `storage/images/sushi.jpg`) (文字列)
 
 # テスト用新店舗追加CSV
-[teststore3.csv](https://github.com/user-attachments/files/19255575/teststore3.csv),
-
-
-[Uploadistore,region_id,genre_id,overview,image
-さくら寿司,東京都,寿司,東京都にある寿司屋です。,https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/sushi.jpg
-まる焼肉,大阪府,焼肉,焼肉を楽しめるお店です。,https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/yakiniku.jpg
-ピッツァ屋,福岡県,イタリアン,本格的なイタリアンピザのお店です。,https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/italian.jpg
-魚居酒屋,福岡県,居酒屋,魚料理と居酒屋メニューが豊富。,https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/izakaya.jpg
-ラーメン一番,大阪府,ラーメン,鶏白湯ラーメンが人気の店。,https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/ramen.jpgng 新店舗追加テスト - シート.csv…]()
-
-
-
+https://docs.google.com/spreadsheets/d/1odyPMABdT3TGWr7a8r5s-T2Jtn90kg8-_ORvqcQEb_c/edit?gid=0#gid=0
 
 
 # 環境構築

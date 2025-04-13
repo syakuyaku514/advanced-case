@@ -53,6 +53,8 @@ https://github.com:syakuyaku514/advanced-case
 # テスト用新店舗追加CSV
 https://docs.google.com/spreadsheets/d/1odyPMABdT3TGWr7a8r5s-T2Jtn90kg8-_ORvqcQEb_c/edit?gid=0#gid=0
 
+上記スプレットシートのファイルからカンマ区切り形式（.csv）をダウンロードしていただくことでテスト用のcsvを利用することが可能です。
+
 
 # 環境構築
 Dockerビルド
